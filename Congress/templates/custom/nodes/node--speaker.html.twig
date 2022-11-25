@@ -1,0 +1,77 @@
+{%
+  set classes = [
+    'node',
+    'node--type-' ~ node.bundle|clean_class,
+    node.isPromoted() ? 'node--promoted',
+    node.isSticky() ? 'node--sticky',
+    not node.isPublished() ? 'node--unpublished',
+    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+    'clearfix',
+  ]
+%}
+{{ attach_library('congress/classy.node') }}
+<article{{ attributes.addClass(classes) }}>
+  <header>
+    {{ title_prefix }}
+      {% if label and not page %}
+      <h2{{ title_attributes.addClass('node__title') }}>
+        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      </h2>
+    {% endif %}
+    {{ title_suffix }}
+    {% if display_submitted %}
+      <div class="node__meta">
+        {{ author_picture }}
+        <span{{ author_attributes }}>
+          {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
+        </span>
+        {{ metadata }}
+      </div>
+    {% endif %}
+  </header>
+  <div{{ content_attributes.addClass('node__content', 'clearfix', 'speaker') }}>
+    <div class="speaker-container">
+      <div class="speaker-left">
+        <div class="image-wrap">
+        {% if content.field_speaker_image.0 %}
+          {{ content.field_speaker_image.0 }}
+        {% else %}
+          <img src="/base_html/www/images/congress_placeholder.png" width="600" height="600" alt="Placeholder Image" typeof="foaf:Image">
+        {% endif %}
+        </div>
+        {% if content.field_twitter.0 %}
+        <div class="social-wrap"> 
+          {% if node.field_twitter.0.url.external %}
+          <a target="_blank" href="{{ node.field_twitter.uri }}">
+            twitter
+          </a>
+        {% else %}
+          <a target="_blank" href="{{ path(node.field_twitter.0.url.routeName, node.field_twitter.0.url.routeParameters) }}">
+            twitter
+          </a>
+        {% endif %}
+        </div>
+
+        
+        {%endif%}
+        {% if node.field_website.0.value %}
+        <div class="website-link">
+          <a href="{{ content.field_website.0 }}" target="_blank">Visit website</a>
+        </div>
+        {%endif%}
+        {% if node.field_on_job_market.value %}
+          <div class="job-market">
+            <a href="#" class="button person" target="_blank">On job market</a>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="speaker-content">
+        <h3>{{ content.field_first_name.0 }} {{ content.field_surname.0 }}</h3>
+        <strong>{{ content.field_organisation_name.0 }}</strong>
+        <p style="margin-top: 1.2em;">{{ content.field_bio.0 }}</p>
+        {{ content.body }}
+      </div>
+    </div>
+  </div>
+</article>

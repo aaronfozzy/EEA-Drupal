@@ -1,0 +1,71 @@
+{%
+  set classes = [
+    'node',
+    'node--type-' ~ node.bundle|clean_class,
+    node.isPromoted() ? 'node--promoted',
+    node.isSticky() ? 'node--sticky',
+    not node.isPublished() ? 'node--unpublished',
+    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+    'clearfix',
+  ]
+%}
+{{ attach_library('congress/classy.node') }}
+<article{{ attributes.addClass(classes) }}>
+  <header>
+    {{ title_prefix }}
+      {% if label and not page %}
+      <h2{{ title_attributes.addClass('node__title') }}>
+        <a href="{{ url }}" rel="bookmark">Your Profile</a>
+      </h2>
+    {% endif %}
+    {{ title_suffix }}
+    {% if display_submitted %}
+      <div class="node__meta">
+        {{ author_picture }}
+        <span{{ author_attributes }}>
+          {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
+        </span>
+        {{ metadata }}
+      </div>
+    {% endif %}
+  </header>
+  <div{{ content_attributes.addClass('node__content', 'clearfix', 'delegate-profile') }}>
+    <div class="profile-container">
+      <div class="profile-left">
+        <div class="image-wrap">
+          {{ content.field_profile_photograph.0 }}
+        </div>
+      {% if node.field_twitter.value %}
+        <div class="social-wrap">
+          {{ content.field_twitter.0 }}
+        </div>
+      {% endif %}
+
+      {% if node.field_website.value %}
+        <div class="website-link">
+          <a href="{{ content.field_website.0 }}">Visit website</a>
+        </div>
+      {% endif %}
+
+        {% if node.field_email_on_profile.value %}
+          <div class="profile-email">
+            <a href="mailto:{{ content.field_email_on_profile.0 }}" class="button orange">Email</a>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="profile-content">
+        <h3>{{ content.field_first_name.0 }} {{ content.field_surname.0 }}</h3>
+        <strong>{{ content.field_organisation_name.0 }}</strong>
+        <p>{{ content.field_bio.0 }}</p>
+      {% if content.field_areas_of_interest[0] %}
+        <ul>
+          {% for key, item in content.field_areas_of_interest if key|first != '#' %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      </div>
+    </div>
+  </div>
+</article>

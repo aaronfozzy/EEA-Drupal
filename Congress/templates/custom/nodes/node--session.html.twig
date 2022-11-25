@@ -1,0 +1,163 @@
+{{ attach_library('congress/classy.node') }}
+
+{% set user = bamboo_load_currentuser() %}
+
+<article{{ attributes.addClass(classes) }}>
+  <header>
+    {{ title_prefix }}
+      {% if label and not page %}
+      <h2{{ title_attributes.addClass('node__title') }}>
+        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      </h2>
+    {% endif %}
+    {{ title_suffix }}
+    {% if display_submitted %}
+      <div class="node__meta">
+        {{ author_picture }}
+        <span{{ author_attributes }}>
+          {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
+        </span>
+        {{ metadata }}
+      </div>
+    {% endif %}
+  </header>
+  <style>
+  .region-page-title{
+    position:relative;
+    flex:1;
+  }
+#block-congressfavoritessingleblock{
+    position: absolute;
+    top: 17px;
+    right: 0;
+    z-index: 99999;
+    display: block;
+    width:29px;
+    height:29px;
+    background-size:contain;
+}
+  </style>
+  <div{{ content_attributes.addClass('node__content', 'clearfix') }}>
+    <div class="view-id-full_programme session-table {{ content.field_eea_or_esem.0 }}">
+      {{ content.field_eea_or_esem }}
+      <table>
+        <thead>
+          <tr>
+            <th>Presenter(s)</th>
+            <th>Type</th>
+            <th class="date"><span></span></th>
+            <th class="time {{ user.field_timezone.entity.name.value }}"><span></span></th>
+            <th>Length</th>
+            <th>Chair</th>
+            <th>Room Number</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if node.field_type.value %}
+            <tr class="{{ content.field_type.0 }}">
+          {% else %}
+            <tr>
+          {% endif %}
+            <td class="speakers-content">{{ content.field_speakers }}</td>
+            <td>{{ content.field_type }}</td>
+            {% set start_date = content.field_start_date.0["#markup"]|split('-') %}
+            <td class="center">{{ start_date[0] }}</td>
+            <td class="center">{{ start_date[1] }}
+              {% if user.timezone.value is not empty %}
+                {{ user.timezone.value|date(format='T') }}
+              {% else %}
+                UTC
+              {% endif %}
+            </td>
+            <td class="center">{{ content.field_duration }}<span> mins</span></td>
+            <td>{{ content.field_chair }}</td>
+            <td>{{ content.field_physical_room }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {% if content.body %}
+        {{ content.body }}
+    {% endif %}
+    <div class="session-detail">
+      <div class="session-image">
+        {{ content.field_session_image }}
+      {% if node.field_website.value %}
+        <a href="" class="button orange full">Visit website</a>
+      {% endif %}
+{% if logged_in %}
+    {% if node.field_video_conference_url.value %}
+        <a href="{{ content.field_video_conference_url.0 }}" class="button full large cam" target="_blank" id="cambtn" target="_blank">Join room</a>
+    {% endif %}
+        
+{% else %}
+        {% if node.field_video_conference_url.value %}
+            <a href="/restricted" class="button full large cam">Join room</a>
+        {% endif %}
+{% endif %}
+{% if node.field_recording_link.value %}
+<a href="{{ content.field_recording_link.0 }}" class="button full large cam" target="_blank" id="cambtn" target="_blank">Watch Video</a>
+{% endif %}
+{% if node.field_sponsor.0.value %}
+      <div class="sponsor">
+        {% if node.field_sponsor.0.value == "Banca d'Italia" %}
+        <img src="/base_html/www/images/sponsor-logos/banca-d-italia-logo.png" alt="Banca d'Italia logo">
+        {% endif %}
+        {% if node.field_sponsor.0.value == "Banco de Espa単a" %}
+        <img src="/base_html/www/images/sponsor-logos/banco-de-espana-logo.png" alt="Banco de Espana logo">
+        {% endif %}
+        {% if node.field_sponsor.0.value == "Bank of England" %}
+        <img src="/base_html/www/images/sponsor-logos/bank-of-england-logo.png" alt="Bank of England logo">
+        {% endif %}
+        {% if node.field_sponsor.0.value == "Deutsche Bundesbank" %}
+        <img src="/base_html/www/images/sponsor-logos/bundesbank-logo.png" alt="Deutsche Bundesbank logo">
+        {% endif %}
+        {% if node.field_sponsor.0.value == "Danmarks Nationalbanken" %}
+        <img src="/base_html/www/images/sponsor-logos/danmarks-nationalbank-logo.png" alt="Danmarks Nationalbanken logo">
+        {% endif %}
+        {% if node.field_sponsor.0.value == "European Central Bank" %}
+        <img src="/base_html/www/images/sponsor-logos/european-central-bank-logo.png" alt="European Central Bank logo">
+        {% endif %}
+        {% if node.field_sponsor.0.value == "National Bank of Romania" %}
+        <img src="/base_html/www/images/sponsor-logos/national-bank-of-romania-logo.png" alt="National Bank of Romania logo">
+        {% endif %}
+        {% if node.field_sponsor.0.value == "Oesterreichische Nationalbank" %}
+          <img src="/base_html/www/images/sponsor-logos/oesterreich-bank-logo.png" alt="Oesterreichische Nationalbank logo">
+        {% endif %}
+        {% if node.field_sponsor.0.value == "UniCredit Foundation" %}
+          <img src="/base_html/www/images/sponsor-logos/unicredit-foundation-logo.png" alt="UniCredit Foundation logo">
+        {% endif %}
+        {% if node.field_sponsor.0.value == "Royal Dutch Economic Association" %}
+          <img src="/base_html/www/images/sponsor-logos/royal-dutch-economic-association-logo.png" alt="Royal Dutch Economic Association logo">
+        {% endif %}
+        {% if node.field_sponsor.0.value == "YRJO" %}
+          <img src="/base_html/www/images/sponsor-logos/yrjo-jahnsson-foundation.png" alt="Yrjo Jahnsson Foundation logo">
+        {% endif %}
+        {% if node.field_sponsor.0.value == "CEBI" %}
+          <img src="/base_html/www/images/sponsor-logos/CEBI-logo.png" alt="CEBI logo">
+        {% endif %}
+
+        {% if node.field_sponsor.0.value == "Sveriges Riksbank" %}
+            <img src="/base_html/www/images/sponsor-logos/sveriges-riksbank-logo.png" alt="Sveriges Riksbank">
+        {% endif %}
+      </div>
+{% endif %}
+      </div>
+      <div class="session-content">
+
+      {{ drupal_view('session_attachments', 'block_1') }}
+      {{ drupal_view('session_attachments', 'block_2') }}
+      </div>
+    </div>
+    
+
+    
+    {% if 'ESEM' in content.field_eea_or_esem.0 %}
+    <div class="home-exhibitors-carousel">
+      <div class="inner">
+          {{ drupal_view('additional_carousel_1','block_2') }}          
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</article>

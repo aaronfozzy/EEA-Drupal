@@ -1,0 +1,207 @@
+<!-- Template: Front page -->
+{%
+  set classes = [
+    'node',
+    'node--type-' ~ node.bundle|clean_class,
+    node.isPromoted() ? 'node--promoted',
+    node.isSticky() ? 'node--sticky',
+    not node.isPublished() ? 'node--unpublished',
+    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+    'clearfix',
+  ]
+%}
+{{ attach_library('congress/classy.node') }}
+
+<article{{ attributes.addClass(classes) }}>
+  <header>
+    {{ title_prefix }}
+      {% if label and not page %}
+      <h2{{ title_attributes.addClass('node__title') }}>
+        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      </h2>
+    {% endif %}
+    {{ title_suffix }}
+    {% if display_submitted %}
+      <div class="node__meta">
+        {{ author_picture }}
+        <span{{ author_attributes }}>
+          {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
+        </span>
+        {{ metadata }}
+      </div>
+    {% endif %}
+  </header>
+  <div{{ content_attributes.addClass('node__content', 'clearfix') }}>
+<!--     <section class="front-hero-intro white">
+      <div class="inner">
+        <div class="node-header">
+          {{ content.field_hero_title }}
+          <p>{{ node.field_hero_copy_text.value }}</p>
+        </div>
+      </div>
+    </section>   -->
+
+    <section class="white first">
+      <div class="home-image">
+        {{ content.field_main_image.0 }}
+        <h1>Boccocini University</h1>
+        <h2>Milano,Italy</h2>
+      </div>
+    </section>
+    <section class="front-hero-intro">
+      <div class="inner">
+        <div class="teasers">
+          <div class="teaser">
+            <a href="{{ node.field_hero_link_1.value }}" target="_blank" class="teaser-content">
+              <div class="image-wrap">
+                {{ content.field_hero_logo_1.0 }}
+              </div>
+              <h2>{{ node.field_hero_name_1.value }}</h2>
+            </a>
+          </div>
+          <div class="teaser">
+            <a href="{{ node.field_hero_link_2.value }}" target="_blank" class="teaser-content">
+              <div class="image-wrap">
+                {{ content.field_hero_logo_2.0 }}
+              </div>
+              <h2>{{ node.field_hero_name_2.value }}</h2>
+            </a>
+          </div>
+          <div class="teaser">
+            <a href="{{ node.field_hero_link_3.value }}" target="_blank" class="teaser-content">
+              <div class="image-wrap">
+                {{ content.field_hero_logo_3.0 }}
+              </div>
+              <h2>{{ node.field_hero_name_3.value }}</h2>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  {% if node.field_section_1_heading.value %}
+    <section class="section home-section-1 white">
+      <div class="inner">
+        <div class="node-header">
+          <div class="header-intro">
+            <a class="header-link" href="{{ node.field_section_1_heading.0.url }}"><h2>{{ node.field_section_1_heading.value.0.title }}</h2></a>
+          </div>
+          <p>{{ node.field_section_1_intro.value }}</p>
+        </div>
+        <div class="block-views-blockhomepage-section-1-block-1">
+          {{ drupal_view('homepage_section_1','block_1') }}
+        </div>
+      </div>
+    </section>
+  {% endif %}
+
+  {% if node.field_section_2_heading.value %}
+    <section class="section home-section-2 white">
+      <div class="inner">
+        <div class="node-header">
+          <div class="header-intro">
+            <a class="header-link" href="{{ node.field_section_2_heading.0.url }}"><h2>{{ node.field_section_2_heading.value.0.title }}</h2></a>
+          </div>
+          <p>{{ node.field_section_2_intro.value }}</p>
+        </div>
+        <div class="block-views-blockses-homepage-section-2-special-sessions-block-1">
+          {{ drupal_view('ses_homepage_section_2_special_sessions','block_1') }}
+        </div>
+      </div>
+    </section>
+  {% endif %}
+
+  {% if node.field_section_heading.value %}
+    <section class="section home-section-3 white">
+      <div class="inner">
+        <div class="node-header">
+          <div class="header-intro">
+            <a class="header-link" href="{{ node.field_section_heading.0.url }}"><h2>{{ node.field_section_heading.value.0.title }}</h2></a>
+          </div>
+          <p>{{ node.field_section_3_intro.value }}</p>
+        </div>
+        {% if logged_in %}
+        <div class="block-views-blockses-homepage-section-2-special-sessions-block-1">
+          {{ drupal_view('homepage_section_3','block_2') }}
+        </div>
+        {% else %}
+        <p class="home-intro-content">To view the full programme of the parallel sessions, please click on full programme below</p>
+        {% endif %}
+        <a class="button large arrow" href="{{ node.field_section_heading.0.url }}">Full programme</a>
+      </div>
+    </section>
+  {% endif %}
+
+
+
+  {% if node.field_section_4_heading.value %}
+    <section class="section home-section-3">
+      <div class="inner">
+        <div class="node-header">
+          <div class="header-intro">
+            <a class="header-link" href="{{ node.field_section_4_heading.0.url }}"><h2>{{ node.field_section_4_heading.value.0.title }}</h2></a>
+          </div>
+        </div>
+        {% if logged_in %}
+        <div class="block-views-blockses-homepage-section-2-special-sessions-block-1">
+          {{ drupal_view('homepage_section_4','block_1') }}
+        </div>
+        {% else %}
+        <p class="home-intro-content">To view the full programme of the contributed sessions, please click on full programme below</p>
+        {% endif %}
+        <a class="button large arrow" href="/full-programme?field_type_value=Contributed">Full programme</a>
+      </div>
+    </section>
+  {% endif %}
+
+  {% if node.field_section_5_heading.value %}
+    <section class="section home-section-4 white">
+      <div class="inner">
+        <div class="node-header">
+          <div class="header-intro">
+            <a class="header-link" href="{{ node.field_section_5_heading.0.url }}"><h2>{{ node.field_section_5_heading.value.0.title }}</h2></a>
+          </div>
+        </div>
+        <div class="block-views-blockses-homepage-section-2-special-sessions-block-1">
+          {{ drupal_view('homepage_section_5_timezone_','block_1') }}
+        </div>
+      </div>
+    </section>
+  {% endif %}
+    <div class="home-exhibitors-carousel home-carousel">
+      <div class="inner">
+        <h2>Organisers</h2>
+          <p class="m800">{{ node.field_exhibitors_intro_copy.value }}</p>
+          {{ drupal_view('homepage_carousel_section','block_1') }}
+      </div>
+    </div>
+
+    <div class="home-exhibitors-carousel">
+      <div class="inner">
+        <h2>EEA-ESEM 2022 Donors</h2>
+        {{ drupal_view('additional_carousel_1','block_1') }}
+      </div>
+    </div>
+
+    <div class="home-exhibitors-carousel">
+      <div class="inner">
+        <h2>EEA institutional members carousel</h2>
+        {{ drupal_view('additional_carousel_1','block_2') }}
+      </div>
+    </div>
+
+    <div class="home-exhibitors-carousel">
+      <div class="inner">
+        <h2>Econometric Society General Sponsors</h2>
+        {{ drupal_view('additional_carousel_1','block_3') }}
+      </div>
+    </div>
+
+    <section class="brought-to-you white">
+      <div class="inner">
+        <h3>Brought to you by</h3>
+        <a href="https://www.eeassoc.org" target="_blank"><img src="/base_html/www/images/eea-main-logo.svg" alt="European Economic Association"></a>
+      </div>
+    </section>
+  </div>
+</article>
