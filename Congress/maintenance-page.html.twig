@@ -1,0 +1,33 @@
+{#
+/**
+ * @file
+ * congress's theme implementation to display a single Drupal page while offline.
+ *
+ * All available variables are mirrored in page.html.twig.
+ *
+ * @see template_preprocess_maintenance_page()
+ */
+ #}
+<header class="header" role="banner">
+  <div class="inner">
+    <img src="/base_html/www/images/world-inequality-conference-logo.svg" alt="World inequality conference" style="max-width: 400px; margin: 0 auto; width: 80%;">
+  </div>
+</header>
+<div id="page-wrapper">
+  <div id="page">
+    <div id="main-wrapper">
+      <div id="main" class="clearfix">
+        <main id="content" class="column" role="main">
+          <section class="section">
+            <a id="main-content"></a>
+            {% if title %}
+              <h1 class="title" id="page-title">{{ title }}</h1>
+            {% endif %}
+            {{ page.content }}
+            {{ page.highlighted }}
+          </section>
+        </main>
+      </div>
+    </div>
+  </div>
+</div>
