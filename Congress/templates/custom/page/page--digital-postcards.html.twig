@@ -1,0 +1,137 @@
+<div id="page-wrapper">
+  <div id="page" class="page--{{ node.label }}">
+    <header class="header" role="banner">
+        <div class="inner">
+            {{ page.site_logo }}
+            <span class="mob-init"></span>
+            {{ page.primary_menu }}
+        </div>
+        <div class="secondary-header">
+          <div class="inner">
+            {% if page.featured_top %}
+            <div class="featured-top">
+              <aside class="featured-top__inner section layout-container clearfix" role="complementary">
+                {{ page.featured_top }}
+              </aside>
+            </div>
+            {% endif %}
+            <div class="event-info">
+              {{ page.event_date }}
+            </div>
+          </div>
+        </div>
+    </header>
+
+  {% if page.header %}
+    <div class="page-sub-head">
+      {{ page.header }}
+    </div>
+  {% endif %}
+
+  {% if page.highlighted %}
+    <div class="highlighted">
+      <aside class="layout-container section clearfix" role="complementary">
+        {{ page.highlighted }}
+      </aside>
+    </div>
+  {% endif %}
+
+  {% if page.page_title %}
+    <div class="page-title-section">
+      <div class="inner">
+        {{ page.page_title }}
+        {% if page.user_menu_top %}
+          <div class="logged-user-menu user-menu-top flex">
+
+{{ drupal_view('sessions_by_user', 'block_1') }}
+            <div class="user-edit-dropdown">
+                <span>Edit profiles</span>
+                {{ page.user_header_top }}
+            </div>
+            {% set user = bamboo_load_currentuser() %}
+            {% if user %}
+               {% set status = 'loggedin' %}
+               {% set userid = user.uid.value %}
+            {% else %}
+               {% set status = 'loggedout' %}
+            {% endif %}
+          {#
+            {% if bamboo_has_role('member') %}
+                <div class="timezone-button"><a class="link-timezone button border" href="/user/edit#edit-field-timezone-wrapper">
+                    {% if user.field_timezone.target_id == '' %}
+                        Set timezone
+                    {% else %}
+                        {{ user.field_timezone.entity.name.value }}
+                    {% endif %}
+                    </a></div>
+            {% else %}
+               {% set memstatus = 'notmember' %}
+            {% endif %}
+          #}
+          {{ page.user_timezone }}
+          {{ page.user_menu_top }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+
+    <main id="content" class="column main-content white" role="main">
+      <section class="section">
+        {{ page.flash_banner }}
+        <div class="inner">
+          {{ page.breadcrumb }}
+        {% if page.secondary_menu %}
+          <div class="logged-user-menu">
+            {{ page.secondary_menu }}
+          </div>
+        {% endif %}
+          <a id="main-content" tabindex="-1"></a>
+          <h1>test@jdpage</h1>
+          {{ page.content }}
+        </div>
+      </section>
+    </main>
+
+      {% if page.sidebar_first %}
+          <div id="sidebar-first" class="column sidebar">
+            <aside class="section" role="complementary">
+              {{ page.sidebar_first }}
+            </aside>
+          </div>
+        {% endif %}
+
+        {% if page.sidebar_second %}
+          <div id="sidebar-second" class="column sidebar">
+            <aside class="section" role="complementary">
+              {{ page.sidebar_second }}
+            </aside>
+          </div>
+        {% endif %}
+
+      {% if page.featured_bottom_first or page.featured_bottom_second or page.featured_bottom_third %}
+        <div class="inner">
+          <div class="featured-bottom">
+            <aside class="layout-container clearfix" role="complementary">
+              {{ page.featured_bottom_first }}
+              {{ page.featured_bottom_second }}
+              {{ page.featured_bottom_third }}
+            </aside>
+          </div>
+        </div>
+      {% endif %}
+      
+      <footer>  
+        <div class="inner">           
+        
+        <p>&copy; {{ 'now' | date('Y') }} European Economic Association. All rights reserved.</p>
+        {% if page.footer_fifth %}
+          {{ page.footer_fifth }}
+        {% endif %}
+        <div class="credits">
+          <p>Website by </p><a href="https://www.dxdigital.co.uk" target="_blank"><img src="/base_html/www/images/dx-logo-white.svg" alt="DX Digital"></a>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
